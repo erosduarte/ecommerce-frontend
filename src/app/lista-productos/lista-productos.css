@@ -1,0 +1,37 @@
+h1 {
+  margin-bottom: 20px;
+  font-size: 40px;
+  text-align: center;
+}
+.catalogo-contenedor{
+  background-color:#F5F5F5 ;
+  max-width: 1250px;
+  margin: 40px auto;
+  padding: 48px;
+  border-radius: 16px;
+
+}
+.catalogo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 60px 24px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+.vacio {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #94a3b8;
+}
+@media (max-width: 768px) {
+  .catalog-container {
+    padding: 20px;
+    margin: 16px;
+  }
+  .catalogo {
+    grid-template-columns: 1fr;
+  }
+}

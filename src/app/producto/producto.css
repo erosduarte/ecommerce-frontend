@@ -1,0 +1,136 @@
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.footer-tarjeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.tarjeta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+}
+
+
+
+.tarjeta.inactivo {
+  opacity: 0.55;
+}
+
+.imagen-container {
+  position: relative;
+  width: 100%;
+  height: 340px;
+  margin-bottom: 14px;
+  overflow: hidden;
+  border-radius: 6px;
+  background-color: #f8fafc;
+}
+
+.imagen-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.categoria {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 4px 10px;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #000000;
+  background-color: #FFFAF0;
+  border-radius: 1px;
+}
+
+h3 {
+  font-family: 'Times New Roman', sans-serif;
+  margin-bottom: 12px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #0f172a;
+  cursor: pointer;
+}
+
+.texto{
+  font-family: 'Times New Roman', sans-serif;
+  color:#000000;
+  text-decoration: none;
+}
+
+.descripcion {
+  margin-bottom: 12px;
+  color: #64748b;
+  overflow: hidden;
+}
+
+.info-meta {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 2px;
+  padding: 8px 12px;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #334155;
+}
+
+.badge-meta {
+  display: flex;
+  gap: 4px;
+}
+
+.agotado {
+  color: #ef4444;
+}
+
+.precio {
+  font-family: 'Times New Roman', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.etiqueta-oferta {
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #000000;
+  background-color: #FFFAF0;
+  border-radius: 1px;
+  text-transform: uppercase;
+}
+
+.etiqueta-no-oferta {
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #94a3b8;
+  background-color: #f1f5f9;
+  border-radius: 1px;
+}
+
+h1 {
+  margin-bottom: 20px;
+  font-size: 40px;
+  text-align: center;
+}
+
+

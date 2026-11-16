@@ -1,0 +1,42 @@
+.titulo {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 40px;
+  color:black
+}
+
+.barra {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+  max-width: 1250px;
+  margin: 20px auto 0 auto;
+  padding: 0 48px;
+}
+
+.enlace {
+  color: #334155;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.enlace:hover {
+  color: #0f172a;
+}
+
+.carrito-enlace {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #0f172a;
+  color: #ffffff;
+}
+
+.carrito-enlace:hover {
+  color: #ffffff;
+  background-color: #1e293b;
+}
+
+.saldo {
+  color: #475569;
+}

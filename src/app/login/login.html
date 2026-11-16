@@ -1,0 +1,55 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Iniciar Sesión</h2>
+
+    @if (errorMessage()) {
+      <p class="error-msg">{{ errorMessage() }}</p>
+    }
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="campo">
+        <label>Correo electrónico</label>
+        <input type="email" formControlName="email" placeholder="correo@domain.com" />
+
+        @if (loginForm.get('email')?.touched && loginForm.get('email')?.invalid) {
+          <small class="error-text">
+            @if (loginForm.get('email')?.hasError('required')) {
+              El correo es obligatorio.
+            } @else if (loginForm.get('email')?.hasError('pattern')) {
+              Debe tener un formato válido y terminar estrictamente en .com (ej: correo@domain.com)
+            }
+          </small>
+        }
+      </div>
+
+      <div class="campo">
+        <label>Contraseña</label>
+        <input type="password" formControlName="password" placeholder="10 chars, May/Min, sin números" />
+
+        @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {
+          <small class="error-text">
+            @if (loginForm.get('password')?.hasError('required')) {
+              La contraseña es obligatoria.
+            } @else if (loginForm.get('password')?.hasError('pattern')) {
+              Debe medir exactamente 10 caracteres, incluir al menos una minúscula, una mayúscula y ningún número.
+            }
+          </small>
+        }
+      </div>
+
+      <div class="campo">
+        <label>
+          <input type="checkbox" formControlName="mayoriaedad" />
+          ¿Eres mayor de 18 años?
+        </label>
+        @if (loginForm.get('mayoriaedad')?.touched && loginForm.get('mayoriaedad')?.invalid) {
+          <small class="error-text">Debes confirmar que eres mayor de edad.</small>
+        }
+      </div>
+
+      <button type="submit" class="btn-ingresar" [disabled]="loginForm.invalid || isSubmitting()">
+        {{ isSubmitting() ? 'Ingresando...' : 'Ingresar' }}
+      </button>
+    </form>
+  </div>
+</div>

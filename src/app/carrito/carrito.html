@@ -1,0 +1,59 @@
+<a routerLink="/" class="volver">← Volver al catálogo</a>
+
+<div class="carrito-contenedor">
+  <h2>Mi carrito</h2>
+
+  @if (carritoService.error()) {
+    <p class="error-msg">{{ carritoService.error() }}</p>
+  }
+
+  @if (carritoService.compraRealizada(); as pagado) {
+    <p class="exito-msg">
+      Compra realizada por {{ pagado | currency: 'USD' : 'symbol-narrow' }}
+    </p>
+  }
+
+  @if (carritoService.items().length === 0) {
+    <p class="vacio">Tu carrito está vacío.</p>
+  } @else {
+    <ul class="lista-items">
+      @for (item of carritoService.items(); track item.id) {
+        <li class="item">
+          <img appEfectoImagen [src]="item.images[0]" [alt]="item.name" />
+
+          <div class="item-info">
+            <h3>{{ item.name }}</h3>
+            <p class="variante">
+              @if (item.talla) { Talla: <strong>{{ item.talla }}</strong> }
+              @if (item.color) { Color: <strong>{{ item.color }}</strong> }
+            </p>
+            <p class="precio-unidad">{{ item.price | currency: 'USD' : 'symbol-narrow' }}</p>
+          </div>
+
+          <div class="cantidad">
+            <button type="button" (click)="cambiarCantidad(item.id, item.cantidad - 1)" [disabled]="item.cantidad <= 1 || carritoService.cargando()">-</button>
+            <span>{{ item.cantidad }}</span>
+            <button type="button" (click)="cambiarCantidad(item.id, item.cantidad + 1)" [disabled]="carritoService.cargando()">+</button>
+          </div>
+
+          <p class="subtotal">{{ item.price * item.cantidad | currency: 'USD' : 'symbol-narrow' }}</p>
+
+          <button type="button" class="btn-eliminar" (click)="eliminar(item.id)" [disabled]="carritoService.cargando()">Quitar</button>
+        </li>
+      }
+    </ul>
+
+    <div class="resumen">
+      <p>Saldo: <strong>{{ carritoService.saldo() | currency: 'USD' : 'symbol-narrow' }}</strong></p>
+      <p>Total: <strong>{{ carritoService.total() | currency: 'USD' : 'symbol-narrow' }}</strong></p>
+      <p>Disponible: <strong>{{ carritoService.disponible() | currency: 'USD' : 'symbol-narrow' }}</strong></p>
+
+      <div class="acciones">
+        <button type="button" class="btn-vaciar" (click)="vaciar()" [disabled]="carritoService.cargando()">Vaciar carrito</button>
+        <button type="button" class="btn-comprar" (click)="comprar()" [disabled]="carritoService.cargando()">
+          {{ carritoService.cargando() ? 'Procesando...' : 'Comprar' }}
+        </button>
+      </div>
+    </div>
+  }
+</div>

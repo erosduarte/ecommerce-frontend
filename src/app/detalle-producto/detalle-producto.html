@@ -1,0 +1,86 @@
+<a routerLink="/" class="volver">← Volver al catálogo</a>
+@if (cargando()) {
+  <p>Cargando producto...</p>
+} @else if (producto(); as p) {
+  <div class="contenedor">
+    <div class="detalle">
+      <div class="imagen-container">
+        <img appEfectoImagen [src]="p.images[0]" [alt]="p.name" (error)="onImageError($event)" />
+        <span class="categoria">{{ p.category }}</span>
+      </div>
+
+      <div class="info-container">
+        <h2>{{ p.name }}</h2>
+
+        <p class="descripcion">{{ p.description }}</p>
+
+        <ul class="datos">
+          <li>
+            Tallas:
+          <strong>{{ p.size.join(', ') }}</strong>
+          </li>
+          <li>
+            Colores:
+            <strong>{{ p.color.join(', ') }}</strong>
+          </li>
+          <li>
+            @if (p.stock > 0) {
+              Stock: <strong>{{ p.stock }}</strong>
+            } @else {
+              <strong class="agotado">Agotado</strong>
+            }
+          </li>
+        </ul>
+
+        <div class="opciones">
+          <p>Talla:</p>
+          <div class="botones-opcion">
+            @for (t of p.size; track t) {
+              <button type="button" [class.activo]="t === tallaSeleccionada()" (click)="seleccionarTalla(t)">{{ t }}</button>
+            }
+          </div>
+        </div>
+
+        <div class="opciones">
+          <p>Color:</p>
+          <div class="botones-opcion">
+            @for (c of p.color; track c) {
+              <button type="button" [class.activo]="c === colorSeleccionado()" (click)="seleccionarColor(c)">{{ c }}</button>
+            }
+          </div>
+        </div>
+
+        <div class="footer-tarjeta">
+          <p class="precio">{{ p.price | currency: 'GTQ' : 'symbol-narrow' }}</p>
+
+          @if (p.oferta) {
+            <span class="etiqueta-oferta">¡Oferta!</span>
+          } @else {
+            <span class="etiqueta-no-oferta">Regular</span>
+          }
+        </div>
+
+        <button
+          type="button"
+          class="btn-agregar"
+          (click)="agregarAlCarrito()"
+          [disabled]="!p.active || p.stock <= 0 || carrito.cargando()"
+        >
+          {{ carrito.cargando() ? 'Agregando...' : 'Agregar al carrito' }}
+        </button>
+
+        @if (carrito.mensaje()) {
+          <p class="exito-msg">
+            {{ carrito.mensaje() }}
+            <a routerLink="/carrito">Ver carrito</a>
+          </p>
+        }
+        @if (carrito.error()) {
+          <p class="error-msg">{{ carrito.error() }}</p>
+        }
+      </div>
+    </div>
+  </div>
+} @else {
+  <p class="mensaje">Producto no encontrado.</p>
+}

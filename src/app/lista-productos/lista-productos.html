@@ -1,0 +1,19 @@
+<div class="catalogo-contenedor">
+
+  <div class="busqueda-container">
+    <input
+      type="text"
+      placeholder="buscar productos"
+      (input)="onBuscar($event)"
+    />
+  </div>
+  <ul class="catalogo">
+   @for (p of productosFiltrados(); track p.id) {
+      <li>
+        <app-producto [producto]="p" />
+      </li>
+    } @empty {
+      <li class="vacio">No hay productos que coincidan con esos filtros.</li>
+    }
+  </ul>
+</div>

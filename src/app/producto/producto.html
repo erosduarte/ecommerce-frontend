@@ -1,0 +1,45 @@
+<article class="tarjeta" [class.inactivo]="!producto().active">
+<div class="imagen-container">
+    <img appEfectoImagen [src]="producto().images[0]" alt="imagen de producto">
+    <span class="categoria">{{ producto().category }}</span>
+  </div>
+
+<h3>
+  <a [routerLink]="['/productos', producto().id]" class="texto">{{ producto().name }}</a>
+</h3>
+
+  <p class="descripcion">{{ producto().description }}</p>
+
+  <ul class="detalles">
+    <li>Tallas:
+      <strong>
+        @for (s of producto().size; track s; let last = $last) {
+          {{ s }}{{ !last ? ', ' : '' }}
+        }
+   </strong>
+  <li>Colores:
+      <strong>
+        @for (c of producto().color; track c; let last = $last) {
+          {{ c }}{{ !last ? ', ' : '' }}
+        }
+   </strong>
+    <li>
+      @if (producto().stock > 0) {
+        Stock: <strong>{{ producto().stock }}</strong>
+      } @else {
+        <strong class="agotado">Agotado</strong>
+      }
+    </li>
+
+  </ul>
+<div class="footer-tarjeta">
+    <p class="precio">{{ producto().price | currency: 'GTQ' : 'symbol-narrow' }}</p>
+
+    @if (producto().oferta) {
+      <span class="etiqueta-oferta">¡Oferta!</span>
+    } @else {
+      <span class="etiqueta-no-oferta">Regular</span>
+    }
+  </div>
+
+</article>
