@@ -46,7 +46,11 @@ export class ListaProductos implements OnInit {
       const cumpleTalla = talla ? p.size.includes(talla) : true;
 
       const cumpleColor = color  ? p.color.includes(color) : true;
-      const cumpleBusqueda = busqueda ? p.name.toLowerCase().includes(busqueda) : true;
+      const cumpleBusqueda = busqueda
+      ? p.name.toLowerCase().includes(busqueda) ||
+        p.color.some(c => c.toLowerCase().includes(busqueda)) ||
+        p.size.some(s => s.toLowerCase().includes(busqueda))
+        : true;
       return cumpleTalla && cumpleColor && cumpleBusqueda;
     });
   });
