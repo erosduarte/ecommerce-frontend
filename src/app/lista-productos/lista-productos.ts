@@ -17,6 +17,8 @@ export class ListaProductos implements OnInit {
   private readonly router = inject(Router);
   filtroTalla = signal<string | null>(null);
   filtroColor = signal<string | null>(null);
+  filtroCategoria= signal<string | null>(null);
+  filtroSubCategoria = signal<string | null>(null);
   filtroBusqueda = signal<string>(``);
   productos = signal<Product[]>([]);
 
@@ -30,6 +32,8 @@ export class ListaProductos implements OnInit {
     this.route.queryParamMap.subscribe((params) => {
       this.filtroTalla.set(params.get('size'));
       this.filtroColor.set(params.get('color'));
+      this.filtroCategoria.set(params.get("categoria"));
+      this.filtroSubCategoria.set(params.get("subcategoria"));
     });
 
     saludo$.subscribe((mensaje)=>{
@@ -41,18 +45,20 @@ export class ListaProductos implements OnInit {
     const lista = this.productos();
     const talla = this.filtroTalla();
     const color = this.filtroColor();
+    const categoria = this.filtroCategoria();
+    const subCategoria = this.filtroSubCategoria();
     const busqueda = this.filtroBusqueda().toLowerCase().trim();
     return lista.filter((p) => {
       const cumpleTalla = talla ? p.size.includes(talla) : true;
-
+      const cumpleCategoria = categoria ? p.category.includes(categoria): true;
+      const cumpleSubCategoria = subCategoria ? p.subcategory?.toLowerCase() === subCategoria.toLowerCase() : true;
       const cumpleColor = color  ? p.color.includes(color) : true;
       const cumpleBusqueda = busqueda
       ? p.name.toLowerCase().includes(busqueda) ||
         p.color.some(c => c.toLowerCase().includes(busqueda)) ||
         p.size.some(s => s.toLowerCase().includes(busqueda))
         : true;
-      return cumpleTalla && cumpleColor && cumpleBusqueda;
-    });
+      return cumpleTalla && cumpleColor && cumpleBusqueda && cumpleCategoria && cumpleSubCategoria;    });
   });
 
   aplicarFiltro(talla: string | null, color: string | null) {

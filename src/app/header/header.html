@@ -1,0 +1,22 @@
+ <header class="header" [class.header--transparente]="esInicio() && !scrolled()">
+
+  <a class="logo" routerLink="/">MI TIENDA</a>
+
+  @if (auth.isLoggedIn()) {
+    <nav class="nav">
+      <a class="link" routerLink="/catalogo"
+         [queryParams]="{ categoria: 'Ropa', subcategoria: 'camisetas' }">CAMISETAS</a>
+      <a class="link" routerLink="/catalogo"
+         [queryParams]="{ categoria: 'Calzado', subcategoria: 'zapatos' }">ZAPATOS</a>
+      <a class="link" routerLink="/catalogo"
+         [queryParams]="{ categoria: 'Accesorios' }">ACCESORIOS</a>
+    </nav>
+
+    <div class="acciones">
+      <span class="link">
+        DISPONIBLE: {{ carrito.disponible() | currency: 'USD' : 'symbol-narrow' }}
+      </span>
+      <a class="link" routerLink="/carrito">CARRITO ({{ carrito.cantidadTotal() }})</a>
+    </div>
+  }
+</header>

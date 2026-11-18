@@ -1,4 +1,7 @@
 <footer>
     <p class="nombre">Ecommerce de Eros</p>
-    <p class="hora">{{hora$ | async | date: 'HH:mm:ss' }}</p>
+    @if (datosCombinados$ | async; as datos) {
+        <p class=" contador ">{{ datos.mensaje }} - {{ datos.contador }}</p>
+    }
+    <p class="hora">{{hora$ | async | date: "medium"}}</p>
 </footer>

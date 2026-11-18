@@ -4,6 +4,7 @@
     name: string;
     description: string;
     category: string;
+    subcategory?: string;
     price: number;
     active: boolean;
     stock: number;

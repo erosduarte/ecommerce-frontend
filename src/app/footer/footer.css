@@ -9,8 +9,14 @@
      font-size: 18px;
      font-weight: 600;
 }
-.hora{
+.contador{
      margin: 4px 30px;
      font-size: 14px;
      color: #0073ff;
+}
+
+.hora{
+     margin: 4px 30px;
+     font-size: 14px;
+     color: #000000;
 }

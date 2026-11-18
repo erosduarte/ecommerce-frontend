@@ -1,0 +1,19 @@
+<main class="hero">
+    @for (c of categorias; track c.nombre) {
+        <a class="hero_panel" routerLink="/catalogo" [queryParams]="{ categoria: c.categoria, subcategoria: c.subcategoria }">
+            <img class="hero_imagen" [src]="c.imagen" [alt]="c.nombre">
+            <span class="hero_link">{{ c.nombre }}</span>
+        </a>
+    }
+</main>
+
+<section class="catalogo-secciones">
+    <h2 class="catalogo-secciones_titulo">CATALOGO</h2>
+    <ul class="catalogo">
+        @for (p of productos(); track p.id) {
+            <li class="catalogo_item">
+                <app-producto [producto]="p" />
+            </li>
+        }
+    </ul>
+</section>
