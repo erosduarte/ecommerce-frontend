@@ -1,7 +1,98 @@
-<footer>
-    <p class="nombre">Ecommerce de Eros</p>
+<footer class="footer">
+  <div class="footer__superior">
+    <form class="footer__newsletter" (submit)="suscribir($event)">
+      <p class="footer__titulo-form">Suscríbete para recibir novedades</p>
+
+      <input class="footer__campo" type="text" name="nombre" placeholder="Nombre" autocomplete="given-name" required>
+      <input class="footer__campo" type="text" name="apellido" placeholder="Apellido" autocomplete="family-name">
+      <input class="footer__campo" type="email" name="correo" placeholder="Correo electrónico" autocomplete="email" required>
+
+      <button class="footer__enviar" type="submit">SUSCRIBIRME</button>
+
+      @if (suscrito()) {
+        <p class="footer__confirmacion">Gracias por suscribirte.</p>
+      }
+    </form>
+
+    <div class="footer__columnas">
+      @for (col of columnas; track col.titulo) {
+        <nav class="footer__columna" [attr.aria-label]="col.titulo">
+          <button
+            class="footer__trigger"
+            type="button"
+            [attr.aria-expanded]="columnaAbierta() === col.titulo"
+            (click)="alternarColumna(col.titulo)"
+          >
+            <span class="footer__encabezado">{{ col.titulo }}</span>
+            <svg
+              class="footer__chevron"
+              [class.footer__chevron--abierto]="columnaAbierta() === col.titulo"
+              viewBox="0 0 12 8"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.2"
+              aria-hidden="true"
+            >
+              <path d="M1 1.5 6 6.5l5-5" />
+            </svg>
+          </button>
+
+          <div class="footer__panel" [class.footer__panel--abierto]="columnaAbierta() === col.titulo">
+            <ul class="footer__lista">
+              @for (e of col.enlaces; track e.texto) {
+                <li>
+                  <a class="footer__enlace" [routerLink]="e.ruta" [queryParams]="e.params">{{ e.texto }}</a>
+                </li>
+              }
+            </ul>
+          </div>
+        </nav>
+      }
+
+      <nav class="footer__columna" aria-label="Síguenos">
+        <button
+          class="footer__trigger"
+          type="button"
+          [attr.aria-expanded]="columnaAbierta() === 'Síguenos'"
+          (click)="alternarColumna('Síguenos')"
+        >
+          <span class="footer__encabezado">Síguenos</span>
+          <svg
+            class="footer__chevron"
+            [class.footer__chevron--abierto]="columnaAbierta() === 'Síguenos'"
+            viewBox="0 0 12 8"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.2"
+            aria-hidden="true"
+          >
+            <path d="M1 1.5 6 6.5l5-5" />
+          </svg>
+        </button>
+
+        <div class="footer__panel" [class.footer__panel--abierto]="columnaAbierta() === 'Síguenos'">
+          <ul class="footer__lista">
+            @for (r of redes; track r.texto) {
+              <li>
+                <a class="footer__enlace" [href]="r.url" target="_blank" rel="noopener">{{ r.texto }}</a>
+              </li>
+            }
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <div class="footer__extra">
+    <p class="footer__nombre">Ecommerce de Eros</p>
     @if (datosCombinados$ | async; as datos) {
-        <p class=" contador ">{{ datos.mensaje }} - {{ datos.contador }}</p>
+      <p class="footer__contador">{{ datos.mensaje }} - {{ datos.contador }} - {{ datos.minutos }}</p>
     }
-    <p class="hora">{{hora$ | async | date: "medium"}}</p>
+    <p class="footer__hora">{{ hora$ | async | date: "medium" }}</p>
+  </div>
+
+  <div class="footer__inferior">
+    <p class="footer__marca">EROS</p>
+    <p class="footer__copy">© {{ anio }} EROS</p>
+  </div>
 </footer>

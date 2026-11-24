@@ -32,8 +32,12 @@ export class ListaProductos implements OnInit {
     this.route.queryParamMap.subscribe((params) => {
       this.filtroTalla.set(params.get('size'));
       this.filtroColor.set(params.get('color'));
-      this.filtroCategoria.set(params.get("categoria"));
-      this.filtroSubCategoria.set(params.get("subcategoria"));
+      this.filtroCategoria.set(params.get('categoria'));
+      this.filtroSubCategoria.set(params.get('subcategoria'));
+      const busqueda = params.get('busqueda');
+      if (busqueda !== null) {
+        this.filtroBusqueda.set(busqueda);
+      }
     });
 
     saludo$.subscribe((mensaje)=>{

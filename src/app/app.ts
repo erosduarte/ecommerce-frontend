@@ -1,14 +1,13 @@
-import { Component, effect, HostListener, inject, OnInit, signal } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { CurrencyPipe } from '@angular/common';
+import { Component, effect, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { AuthService } from './auth.service';
 import { CarritoService } from './carrito.service';
-import { Footer } from './footer/footer';
-import { filter, map } from 'rxjs';
 import { Header } from './header/header';
+import { Footer } from './footer/footer';
+
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, CurrencyPipe, Footer, Header],
+  imports: [RouterOutlet, Header, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
@@ -17,13 +16,10 @@ export class App {
   readonly carrito = inject(CarritoService);
 
   constructor() {
-    
     effect(() => {
       if (this.auth.isLoggedIn()) {
         this.carrito.cargarSaldo();
       }
     });
   }
-
-
 }

@@ -1,22 +1,186 @@
- <header class="header" [class.header--transparente]="esInicio() && !scrolled()">
+<header class="header" [class.header--transparente]="transparente()">
+  @if (auth.isLoggedIn()) {
+    <button
+      class="header__burger"
+      [class.header__burger--abierto]="menuMovil()"
+      type="button"
+      aria-label="Menú"
+      [attr.aria-expanded]="menuMovil()"
+      (click)="alternarMovil()"
+    >
+      <span></span>
+      <span></span>
+    </button>
+  }
 
-  <a class="logo" routerLink="/">MI TIENDA</a>
+  <a
+    class="header__logo"
+    [class.header__logo--grande]="logoGrande()"
+    routerLink="/"
+    (mouseenter)="cerrar()"
+  >EROS</a>
 
   @if (auth.isLoggedIn()) {
-    <nav class="nav">
-      <a class="link" routerLink="/catalogo"
-         [queryParams]="{ categoria: 'Ropa', subcategoria: 'camisetas' }">CAMISETAS</a>
-      <a class="link" routerLink="/catalogo"
-         [queryParams]="{ categoria: 'Calzado', subcategoria: 'zapatos' }">ZAPATOS</a>
-      <a class="link" routerLink="/catalogo"
-         [queryParams]="{ categoria: 'Accesorios' }">ACCESORIOS</a>
+    <nav class="header__nav">
+      @for (s of secciones; track s.nombre) {
+        <a
+          class="header__link"
+          [class.header__link--activo]="menuAbierto() === s.nombre"
+          routerLink="/catalogo"
+          [queryParams]="s.params"
+          (mouseenter)="abrir(s.nombre)"
+          (focus)="abrir(s.nombre)"
+        >{{ s.nombre }}</a>
+      }
     </nav>
 
-    <div class="acciones">
-      <span class="link">
-        DISPONIBLE: {{ carrito.disponible() | currency: 'USD' : 'symbol-narrow' }}
+    <div class="header__acciones" (mouseenter)="cerrar()">
+      <button class="header__icono" type="button" aria-label="Buscar" (click)="alternarBusqueda()">
+        <svg class="header__svg header__svg--lupa" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="7.75" cy="7.75" r="6.75" />
+          <path d="m12.75 12.75 4.25 4.25" />
+        </svg>
+        <span class="header__icono-texto">Buscar</span>
+      </button>
+
+      <button class="header__icono header__icono--cuenta" type="button" aria-label="Cerrar sesión" title="Cerrar sesión" (click)="cerrarSesion()">
+        <svg class="header__svg" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="9" cy="5.5" r="3.75" />
+          <path d="M1.5 17c0-4 3.3-6.5 7.5-6.5s7.5 2.5 7.5 6.5" />
+        </svg>
+      </button>
+
+      <a class="header__icono" routerLink="/carrito" aria-label="Carrito">
+        <svg class="header__svg header__svg--bolsa" viewBox="0 0 14 18" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M1 5.5h12l-.75 11.5H1.75L1 5.5Z" />
+          <path d="M4.25 5.5V4a2.75 2.75 0 0 1 5.5 0v1.5" />
+        </svg>
+        @if (carrito.cantidadTotal() > 0) {
+          <span class="header__contador">{{ carrito.cantidadTotal() }}</span>
+        }
+      </a>
+
+      <span class="header__saldo" title="Saldo disponible">
+        {{ carrito.disponible() | precio }}
       </span>
-      <a class="link" routerLink="/carrito">CARRITO ({{ carrito.cantidadTotal() }})</a>
+
+      <select class="header__moneda" aria-label="Moneda" (change)="cambiarMoneda($event)">
+        @for (m of moneda.monedas; track m) {
+          <option [value]="m" [selected]="m === moneda.actual()">{{ m }}</option>
+        }
+      </select>
     </div>
   }
 </header>
+
+@if (buscando()) {
+  <div class="buscador">
+    <form class="buscador__form" (submit)="buscar($event, entrada.value)">
+      <svg class="header__svg header__svg--lupa" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="7.75" cy="7.75" r="6.75" />
+        <path d="m12.75 12.75 4.25 4.25" />
+      </svg>
+      <input
+        #entrada
+        class="buscador__input"
+        type="search"
+        name="busqueda"
+        placeholder="Buscar productos"
+        autocomplete="off"
+        (keydown.escape)="cerrarBusqueda()"
+      >
+    </form>
+    <button class="buscador__cerrar" type="button" (click)="cerrarBusqueda()">Cerrar</button>
+  </div>
+}
+
+@if (menuMovil()) {
+  <nav class="menu-movil" aria-label="Menú móvil">
+    <div class="menu-movil__secciones">
+      @for (s of secciones; track s.nombre) {
+        <div class="menu-movil__grupo">
+          <button
+            class="menu-movil__trigger"
+            type="button"
+            [attr.aria-expanded]="subMenuMovilAbierto() === s.nombre"
+            (click)="alternarSubMenuMovil(s.nombre)"
+          >
+            <span>{{ s.nombre }}</span>
+            <svg
+              class="menu-movil__chevron"
+              [class.menu-movil__chevron--abierto]="subMenuMovilAbierto() === s.nombre"
+              viewBox="0 0 12 8"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.2"
+              aria-hidden="true"
+            >
+              <path d="M1 1.5 6 6.5l5-5" />
+            </svg>
+          </button>
+
+          @if (subMenuMovilAbierto() === s.nombre) {
+            <div class="menu-movil__panel">
+              @for (col of s.columnas; track col.titulo) {
+                <ul class="menu-movil__sublista">
+                  @for (e of col.enlaces; track e.texto) {
+                    <li>
+                      <a
+                        class="menu-movil__subenlace"
+                        routerLink="/catalogo"
+                        [queryParams]="e.params"
+                        (click)="alternarMovil()"
+                      >{{ e.texto }}</a>
+                    </li>
+                  }
+                </ul>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="menu-movil__pie">
+      <button class="menu-movil__salir" type="button" (click)="cerrarSesion()">Cerrar sesión</button>
+      <span class="menu-movil__saldo">
+        Disponible: {{ carrito.disponible() | precio }}
+      </span>
+      <select class="menu-movil__moneda" aria-label="Moneda" (change)="cambiarMoneda($event)">
+        @for (m of moneda.monedas; track m) {
+          <option [value]="m" [selected]="m === moneda.actual()">{{ m }}</option>
+        }
+      </select>
+    </div>
+  </nav>
+}
+
+@if (seccionActual(); as s) {
+  <div class="menu">
+    <div class="menu__columnas">
+      @for (col of s.columnas; track col.titulo) {
+        <div class="menu__columna">
+          <p class="menu__titulo">{{ col.titulo }}</p>
+          <ul class="menu__lista">
+            @for (e of col.enlaces; track e.texto) {
+              <li>
+                <a class="menu__enlace" routerLink="/catalogo" [queryParams]="e.params">{{ e.texto }}</a>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+
+    <div class="menu__destacados">
+      @for (d of s.destacados; track d.texto) {
+        <a class="menu__destacado" routerLink="/catalogo" [queryParams]="d.params">
+          <span class="menu__marco">
+            <img class="menu__imagen" [src]="d.imagen" [alt]="d.texto">
+          </span>
+          <span class="menu__destacado-texto">{{ d.texto }}</span>
+        </a>
+      }
+    </div>
+  </div>
+}
