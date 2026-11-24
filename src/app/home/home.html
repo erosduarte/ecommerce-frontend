@@ -1,0 +1,40 @@
+<main class="hero">
+  @for (c of categorias; track c.nombre) {
+    <a class="hero_panel" routerLink="/catalogo"
+       [style.--text-color]="c.color"
+       [queryParams]="{ categoria: c.categoria, subcategoria: c.subcategoria }">
+      <img class="hero_imagen" [src]="c.imagen" [alt]="c.nombre">
+      <span class="hero_link">{{ c.nombre }}</span>
+    </a>
+  }
+</main>
+
+<section class="colecciones">
+  <ul class="colecciones_lista">
+    @for (c of colecciones; track c.nombre) {
+      <li class="colecciones_item">
+        <a class="colecciones_enlace" routerLink="/catalogo"
+           [queryParams]="{ categoria: c.categoria, subcategoria: c.subcategoria }">
+          <span class="colecciones_nombre">{{ c.nombre }}</span>
+          <img class="colecciones_imagen" [src]="c.imagen" [alt]="c.nombre" width="1440" height="2160">
+        </a>
+      </li>
+    }
+  </ul>
+</section>
+
+<section class="pilares" aria-label="Pilares de marca">
+  <ul class="pilares_lista">
+    @for (p of pilares; track p.titulo) {
+      <li class="pilares_item">
+        <a class="pilares_enlace" [routerLink]="p.ruta" [queryParams]="p.params">
+          <span class="pilares_marco">
+            <img class="pilares_imagen" [src]="p.imagen" [alt]="p.titulo" width="1110" height="1665">
+          </span>
+          <h2 class="pilares_titulo">{{ p.titulo }}</h2>
+          <p class="pilares_descripcion">{{ p.descripcion }}</p>
+        </a>
+      </li>
+    }
+  </ul>
+</section>

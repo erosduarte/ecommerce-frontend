@@ -1,17 +1,4 @@
-<div>
-  <h1 class="titulo">E-commerce</h1>
-</div>
-
-@if (auth.isLoggedIn()) {
-  <nav class="barra">
-    <a routerLink="/" class="enlace">Catálogo</a>
-    <span class="saldo">
-      Disponible: <strong>{{ carrito.disponible() | currency: 'USD' : 'symbol-narrow' }}</strong>
-    </span>
-    <a routerLink="/carrito" class="enlace carrito-enlace">
-      Carrito ({{ carrito.cantidadTotal() }})
-    </a>
-  </nav>
-}
-
+<app-header></app-header>
 <router-outlet></router-outlet>
+
+<app-footer></app-footer>

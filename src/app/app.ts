@@ -1,11 +1,13 @@
 import { Component, effect, inject } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
-import { CurrencyPipe } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
 import { AuthService } from './auth.service';
 import { CarritoService } from './carrito.service';
+import { Header } from './header/header';
+import { Footer } from './footer/footer';
+
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, CurrencyPipe],
+  imports: [RouterOutlet, Header, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
