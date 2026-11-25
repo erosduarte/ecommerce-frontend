@@ -1,45 +1,61 @@
-<article class="tarjeta" [class.inactivo]="!producto().active">
-<div class="imagen-container">
-    <img appEfectoImagen [src]="producto().images[0]" alt="imagen de producto">
-    <span class="categoria">{{ producto().category }}</span>
-  </div>
-
-<h3>
-  <a [routerLink]="['/productos', producto().id]" class="texto">{{ producto().name }}</a>
-</h3>
-
-  <p class="descripcion">{{ producto().description }}</p>
-
-  <ul class="detalles">
-    <li>Tallas:
-      <strong>
-        @for (s of producto().size; track s; let last = $last) {
-          {{ s }}{{ !last ? ', ' : '' }}
+<article class="tarjeta" [class.tarjeta--agotado]="!disponible()">
+  <div class="media">
+    <a
+      class="media__enlace"
+      [routerLink]="['/productos', producto().id]"
+      [attr.aria-label]="producto().name"
+    >
+      <span class="media__pista" [style.transform]="'translateX(-' + imagenActual() * 100 + '%)'">
+        @for (src of producto().images; track $index) {
+          <img class="media__img" [src]="src" [alt]="producto().name" loading="lazy" />
         }
-   </strong>
-  <li>Colores:
-      <strong>
-        @for (c of producto().color; track c; let last = $last) {
-          {{ c }}{{ !last ? ', ' : '' }}
-        }
-   </strong>
-    <li>
-      @if (producto().stock > 0) {
-        Stock: <strong>{{ producto().stock }}</strong>
-      } @else {
-        <strong class="agotado">Agotado</strong>
-      }
-    </li>
+      </span>
+    </a>
 
-  </ul>
-<div class="footer-tarjeta">
-    <p class="precio">{{ producto().price | currency: 'GTQ' : 'symbol-narrow' }}</p>
+    <span class="media__etiqueta">{{ etiqueta() }}</span>
 
-    @if (producto().oferta) {
-      <span class="etiqueta-oferta">¡Oferta!</span>
-    } @else {
-      <span class="etiqueta-no-oferta">Regular</span>
+    @if (hayVariasImagenes()) {
+      <button class="media__flecha media__flecha--izq" type="button" aria-label="Imagen anterior" (click)="anterior($event)">
+        <svg viewBox="0 0 10 18" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 1 1.5 9 9 17" />
+        </svg>
+      </button>
+      <button class="media__flecha media__flecha--der" type="button" aria-label="Imagen siguiente" (click)="siguiente($event)">
+        <svg viewBox="0 0 10 18" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m1 1 7.5 8L1 17" />
+        </svg>
+      </button>
     }
+
+    <button class="media__agregar" type="button" [disabled]="!disponible()" (click)="agregar()">
+      {{ textoBoton() }}
+    </button>
   </div>
 
+  <div class="info">
+    <a class="info__nombre" [routerLink]="['/productos', producto().id]">{{ producto().name }}</a>
+    <span class="info__precio">{{ producto().price | precio }}</span>
+  </div>
+
+  @if (producto().color.length) {
+    <ul class="muestras" aria-label="Colores disponibles">
+      @for (c of muestras(); track c) {
+        <li>
+          <button
+            class="muestra"
+            type="button"
+            [class.muestra--activa]="c === colorActivo()"
+            [style.background-color]="hex(c)"
+            [attr.aria-label]="c"
+            [attr.aria-pressed]="c === colorActivo()"
+            [title]="c"
+            (click)="elegirColor(c)"
+          ></button>
+        </li>
+      }
+      @if (hayMasColores()) {
+        <li class="muestras__mas" aria-hidden="true">+</li>
+      }
+    </ul>
+  }
 </article>
