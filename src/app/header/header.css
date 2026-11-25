@@ -97,7 +97,6 @@
   text-transform: none;
   letter-spacing: 0;
 }
-.menu__enlace:hover { text-decoration: underline; text-underline-offset: 4px; }
 
 .menu__destacados { display: flex; gap: 10px; }
 
@@ -142,6 +141,11 @@
   bottom: -2px;
   height: 1px;
   background: currentColor;
+  transition: opacity 0.2s ease;
+}
+.menu__destacado:hover .menu__destacado-texto::after,
+.menu__destacado:focus-visible .menu__destacado-texto::after {
+  opacity: 0;
 }
 
 .header__burger {

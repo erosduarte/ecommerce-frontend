@@ -15,8 +15,7 @@
     </form>
 
     <div class="footer__columnas">
-      @for (col of columnas; track col.titulo) {
-        <nav class="footer__columna" [attr.aria-label]="col.titulo">
+        @for (col of columnas(); track col.titulo) {        <nav class="footer__columna" [attr.aria-label]="col.titulo">
           <button
             class="footer__trigger"
             type="button"
@@ -72,8 +71,7 @@
 
         <div class="footer__panel" [class.footer__panel--abierto]="columnaAbierta() === 'Síguenos'">
           <ul class="footer__lista">
-            @for (r of redes; track r.texto) {
-              <li>
+            @for (r of redes(); track r.texto) {              <li>
                 <a class="footer__enlace" [href]="r.url" target="_blank" rel="noopener">{{ r.texto }}</a>
               </li>
             }

@@ -1,5 +1,5 @@
 <main class="hero">
-  @for (c of categorias; track c.nombre) {
+  @for (c of categorias(); track c.nombre) {
     <a class="hero_panel" routerLink="/catalogo"
        [style.--text-color]="c.color"
        [queryParams]="{ categoria: c.categoria, subcategoria: c.subcategoria }">
@@ -11,7 +11,7 @@
 
 <section class="colecciones">
   <ul class="colecciones_lista">
-    @for (c of colecciones; track c.nombre) {
+    @for (c of colecciones(); track c.nombre) {
       <li class="colecciones_item">
         <a class="colecciones_enlace" routerLink="/catalogo"
            [queryParams]="{ categoria: c.categoria, subcategoria: c.subcategoria }">
@@ -25,7 +25,7 @@
 
 <section class="pilares" aria-label="Pilares de marca">
   <ul class="pilares_lista">
-    @for (p of pilares; track p.titulo) {
+    @for (p of pilares(); track p.titulo) {
       <li class="pilares_item">
         <a class="pilares_enlace" [routerLink]="p.ruta" [queryParams]="p.params">
           <span class="pilares_marco">
