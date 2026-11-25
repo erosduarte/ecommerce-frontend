@@ -2,11 +2,10 @@
   "name": "proyectonuevo",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test:e2e": "playwright test",
+    "test:visual": "playwright test e2e/visual.spec.ts",
+    "test:visual:update": "playwright test e2e/visual.spec.ts --update-snapshots",
+    "test:report": "playwright show-report"
   },
   "private": true,
   "packageManager": "npm@11.17.0",
@@ -24,6 +23,8 @@
     "@angular/build": "^22.1.4",
     "@angular/cli": "^22.1.4",
     "@angular/compiler-cli": "^22.1.0",
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^26.6.10",
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",
