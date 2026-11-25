@@ -22,7 +22,7 @@
 
   @if (auth.isLoggedIn()) {
     <nav class="header__nav">
-      @for (s of secciones; track s.nombre) {
+      @for (s of secciones(); track s.nombre) {
         <a
           class="header__link"
           [class.header__link--activo]="menuAbierto() === s.nombre"
@@ -97,8 +97,7 @@
 @if (menuMovil()) {
   <nav class="menu-movil" aria-label="Menú móvil">
     <div class="menu-movil__secciones">
-      @for (s of secciones; track s.nombre) {
-        <div class="menu-movil__grupo">
+        @for (s of secciones(); track s.nombre) {        <div class="menu-movil__grupo">
           <button
             class="menu-movil__trigger"
             type="button"

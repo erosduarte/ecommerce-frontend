@@ -1,14 +1,41 @@
-<div class="catalogo-contenedor">
+<section class="coleccion">
+  <nav class="migas" aria-label="Ruta de navegación">
+    @for (m of migas(); track m.texto; let ultimo = $last) {
+      @if (ultimo) {
+        <span class="migas__actual" aria-current="page">{{ m.texto }}</span>
+      } @else {
+        <a class="migas__enlace" [routerLink]="m.ruta" [queryParams]="m.params">{{ m.texto }}</a>
+        <span class="migas__sep" aria-hidden="true">&gt;</span>
+      }
+    }
+  </nav>
 
-  <div class="busqueda-container">
-    <input
-      type="text"
-      placeholder="buscar productos"
-      (input)="onBuscar($event)"
-    />
+  <h1 class="coleccion__titulo">{{ titulo() }}</h1>
+
+  <div class="coleccion__cabecera">
+    <p class="coleccion__descripcion">{{ descripcion() }}</p>
+
+    <button
+      class="filtro-boton"
+      type="button"
+      aria-haspopup="dialog"
+      [attr.aria-expanded]="filtrosAbiertos()"
+      (click)="abrirFiltros()"
+    >
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" aria-hidden="true">
+        <path d="M1 5h6M11 5h6M1 13h2M7 13h10" />
+        <circle cx="9" cy="5" r="2" />
+        <circle cx="5" cy="13" r="2" />
+      </svg>
+      <span>Filtrar</span>
+      @if (filtrosActivos() > 0) {
+        <span class="filtro-boton__cuenta">({{ filtrosActivos() }})</span>
+      }
+    </button>
   </div>
+
   <ul class="catalogo">
-   @for (p of productosFiltrados(); track p.id) {
+    @for (p of productosFiltrados(); track p.id) {
       <li>
         <app-producto [producto]="p" />
       </li>
@@ -16,4 +43,71 @@
       <li class="vacio">No hay productos que coincidan con esos filtros.</li>
     }
   </ul>
-</div>
+</section>
+
+@if (filtrosAbiertos()) {
+  <div class="velo" (click)="cerrarFiltros()"></div>
+
+  <aside class="panel" role="dialog" aria-modal="true" aria-label="Filtros">
+    <div class="panel__cabecera">
+      <h2 class="panel__titulo">Filtrar</h2>
+      <button class="panel__cerrar" type="button" (click)="cerrarFiltros()">Cerrar ×</button>
+    </div>
+
+    <div class="panel__cuerpo">
+      <fieldset class="grupo">
+        <legend class="grupo__titulo">Ordenar por</legend>
+        <div class="opciones">
+          @for (o of ordenes; track o.valor) {
+            <button
+              type="button"
+              class="opcion"
+              [class.opcion--activa]="borradorOrden() === o.valor"
+              [attr.aria-pressed]="borradorOrden() === o.valor"
+              (click)="alternarOrden(o.valor)"
+            >{{ o.texto }}</button>
+          }
+        </div>
+      </fieldset>
+
+      @if (tallasDisponibles().length) {
+        <fieldset class="grupo">
+          <legend class="grupo__titulo">Talla</legend>
+          <div class="opciones">
+            @for (t of tallasDisponibles(); track t) {
+              <button
+                type="button"
+                class="opcion"
+                [class.opcion--activa]="borradorTalla() === t"
+                [attr.aria-pressed]="borradorTalla() === t"
+                (click)="alternarTalla(t)"
+              >{{ t }}</button>
+            }
+          </div>
+        </fieldset>
+      }
+
+      @if (coloresDisponibles().length) {
+        <fieldset class="grupo">
+          <legend class="grupo__titulo">Color</legend>
+          <div class="opciones">
+            @for (c of coloresDisponibles(); track c) {
+              <button
+                type="button"
+                class="opcion"
+                [class.opcion--activa]="borradorColor() === c"
+                [attr.aria-pressed]="borradorColor() === c"
+                (click)="alternarColor(c)"
+              >{{ c }}</button>
+            }
+          </div>
+        </fieldset>
+      }
+    </div>
+
+    <div class="panel__pie">
+      <button class="btn-aplicar" type="button" (click)="aplicar()">Aplicar</button>
+      <button class="btn-limpiar" type="button" (click)="limpiar()">Limpiar</button>
+    </div>
+  </aside>
+}
