@@ -1,0 +1,7 @@
+# Dependencias y caché de Angular
+/node_modules
+/.angular/cache
+/dist
+
+# Archivos del sistema (macOS)
+.DS_Store
